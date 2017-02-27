@@ -1,0 +1,35 @@
+#!/bin/bash
+
+	if (( $# < 2 )); then
+		echo -e "USAGE:\n $0 [url] [time(in seconds)] [e-mail //optional// ]\n"
+		exit 0;
+	fi
+
+while true; do
+	first_use=0
+	if [ ! -e "last" ]; then
+		first_use=1
+	fi
+
+	lynx -dump $1 > current 
+
+	if (( $first_use != 1 )); then
+		changes=$(diff -u last current)
+		if [ -n "$changes" ]; then
+			echo -e "Changes:"
+			#echo "changes\n" 
+			if [ -n "$3" ]; then
+				mail -s "CHANGES ON WEBSITE [$1]" $3 <<< "$changes"
+				if (( $? == 0 )); then echo "e-mail sended to $3" 
+				else echo "Problem with sending e-mail [$3]"
+				fi
+			fi 
+		else
+			echo -e "Website has no changes"
+		fi
+	else
+		echo "Traceing changes..."
+	fi
+		cp current last
+sleep $2
+done
