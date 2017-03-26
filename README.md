@@ -1,5 +1,5 @@
 # Website-tracking
-Shell script which allow you to trace changes on website and sending changes on e-mail
+Shell script which allows you to trace changes on website and sending changes on e-mail
 
 USAGE:
 webtrace [URL] [TIME] [E-MAIL]
